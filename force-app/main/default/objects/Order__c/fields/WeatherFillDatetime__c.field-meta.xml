@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WeatherFillDatetime__c</fullName>
+    <description>Identify the date and time when the weather is calculated using integration</description>
+    <label>Weather Fill Datetime</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BlockValuesNegatives</fullName>
+    <active>true</active>
+    <description>Avoid having orders with negative values</description>
+    <errorConditionFormula>TotalAmount__c &lt; 0</errorConditionFormula>
+    <errorDisplayField>TotalAmount__c</errorDisplayField>
+    <errorMessage>Negative values ​​are not allowed</errorMessage>
+</ValidationRule>

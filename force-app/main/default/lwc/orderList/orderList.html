@@ -1,0 +1,55 @@
+<template>
+    <lightning-card>
+        {userCoordinates.latitude} | *******
+      <div class="slds-var-m-around_medium">
+        <div class="slds-grid slds-grid_vertical-align-center slds-var-m-horizontal_x-small">
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-button
+                class="new"
+                onclick={handleNew}
+                label="New"
+                ></lightning-button>
+              
+            </div>
+        </div>
+        <template lwc:if={recordsUI}>
+          <lightning-datatable
+                key-field="Id"
+                data={dataTable}
+                columns={columns}
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+          <div class="slds-grid slds-grid_vertical-align-center slds-var-m-horizontal_x-small">
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-button-icon
+                disabled={isFirstPage}
+                class="reset"
+                icon-name="utility:skip_back"
+                onclick={handleReset}
+                ></lightning-button-icon>
+              
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-button-icon
+                disabled={isFirstPage}
+                class="prev"
+                icon-name="utility:chevronleft"
+                onclick={handlePrev}
+                ></lightning-button-icon>
+              <lightning-button-icon
+                disabled={isLastPage}
+                class="next"
+                icon-name="utility:chevronright"
+                onclick={handleNext}
+                ></lightning-button-icon>
+            </div>
+          </div>
+        </template>
+        <template lwc:elseif={errorsUI}>
+            <!-- The message can be improved -->
+            {errorsUI}
+        </template>
+      </div>
+  
+    </lightning-card>
+</template>

@@ -1,18 +1,85 @@
-# Salesforce DX Project: Next Steps
+# Customer Order Management & External Integration Dashboard
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+## Overview
+This project is a Salesforce-based solution that allows users to manage customer orders through a Lightning Web Component (LWC). It includes back-end logic with Apex triggers, batch jobs, and an external API integration for real-time weather data.
 
-## How Do You Plan to Deploy Your Changes?
+## Features
+- **Order Management**: Create, update, and view customer orders.
+- **Apex Automation**:
+  - Trigger to auto-calculate the total order value.
+  - Batch job to flag overdue orders.
+- **External API Integration**:
+  - Fetch weather information from OpenWeather API.
+- **LWC Frontend**:
+  - Paginated order listing.
+  - Detailed order view with customer and weather details.
+  - CRUD operations for orders and order items.
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+## Installation & Setup
 
-## Configure Your Salesforce DX Project
+### Prerequisites
+- OpenWeather API Key.
+- Named Credential "WeatherAPI" setup in Salesforce.
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+### Step 1: Deploy Metadata
+1. Deploy custom objects with their fields:
+   - `Customer__c`
+   - `Order__c`
+   - `OrderItem__c`
+   - `CalloutSetting__mdt`
 
-## Read All About It
+### Step 2: Configure Named Credential
+1. Navigate to **Setup > Named Credentials**.
+2. Create a named credential:
+   - Label: `WeatherAPI`
+   - URL: `https://api.openweathermap.org/data/2.5/weather`
+   - Authentication: None (API Key handled via metadata).
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+### Step 3: Metadata Configuration
+1. Navigate to **Setup > Custom Metadata Types**.
+2. Create a new record for `CalloutSetting__mdt`:
+   - DeveloperName: `WeatherApi`
+   - `Endpoint__c`: `https://api.openweathermap.org/data/2.5/weather`
+   - `Method__c`: `GET`
+   - `Token__c`: `<YOUR_API_KEY>`
+
+### Step 4: Deploy Apex Classes
+- `OrderService.cls` - Business logic for order calculations.
+- `WeatherCallout.cls` - Handles API callouts.
+- `OrdersDueIdentifyBatch.cls` - Batch job for overdue orders.
+- `OrderTriggerHandler.cls` - Trigger logic using `sfdc-trigger-framework`.
+- `OrderItemTriggerHandler.cls` - Trigger logic using `sfdc-trigger-framework`.
+- `TriggerHandler.cls` - It is (sfdc-trigger-framework)[https://github.com/kevinohara80/sfdc-trigger-framework].
+
+### Step 5: Deploy Apex Test
+- `OrderTrigger.cls` - Trigger object `Order__c`.
+- `OrderItemTrigger.cls` - Trigger object `OrderItem__c`.
+
+### Step 6: Deploy LWC
+1. Deploy `orderList` component.
+2. Ensure it is accessible in Lightning App Builder.
+
+### Step 7: Deploy Tabs and Flexipages
+1. Deploy Tab `Customer__c` and `Order__c`.
+2. Deploy Flexipage `Order_List`.
+
+### Step 8: Assign Permissions
+1. Assign necessary object and field permissions to users.
+2. Provide API callout permissions if using external services.
+
+## How to Use
+1. **Viewing Orders**: Navigate to the **Orders** tab.
+2. **Creating Orders**: Click **New**, fill in details, and save.
+3. **Updating Orders**: Edit an existing order.
+4. **Checking Weather Data**: Orders automatically update with weather details.
+5. **Batch Job Execution**: Run `OrdersDueIdentifyBatch` manually or schedule it.
+
+## Demo
+A short demo video demonstrating the functionality is included.
+
+## Future Enhancements
+- Add custom reports and dashboards.
+- Implement caching for weather data.
+- Enhance UI with additional filtering and sorting.
+
+
